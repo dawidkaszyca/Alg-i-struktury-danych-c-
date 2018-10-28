@@ -1,0 +1,136 @@
+# Alg-i-struktury-danych-[c++]
+
+#include <iostream>
+
+using namespace std;
+
+struct elem{
+    int dana;       // miejsce na przechowywanie danych zapamitanych w danym elemencie
+    elem* nast;     // wskaznik na kolejny element listy jednokierunkowej
+};
+
+void insertt(elem* &head, int x,int i)//wstawianie w podane miejsce (i)
+{
+
+    elem *ptr=head;
+    if(i>1 && head!=NULL){
+        for(int y=1;y<(i-1);y++){
+            if(ptr!=NULL){
+            ptr=ptr->nast;
+            }
+            else break;
+        }
+        if(ptr!=NULL){
+        elem*ptr2=new elem();
+        ptr2->dana=x;
+        ptr2->nast=ptr->nast;
+        ptr->nast=ptr2;
+        }
+        else cout<<"brakuje elementu i-1..."<<endl;
+    }
+    else if(i==1){
+        head=new elem();
+        head->dana=x;
+        head->nast=ptr;
+        }
+    else if(i<1){
+        cout<<"ZLE DANE"<<endl;
+        }
+
+
+}
+
+void removee(elem* &head,int i) //usuniecie itego elementu
+{
+    if(i>1){
+        elem* ptr=head;
+        for(int x=1;x<(i-1);x++){
+            if(ptr!=NULL)ptr=ptr->nast;
+            else break;
+        }
+
+        if(ptr!=NULL&&ptr->nast!=NULL){
+            elem*deletee=ptr->nast;
+            ptr->nast=deletee->nast;
+            delete deletee;
+        }
+        else cout<<"brakuje elementu i-1..."<<endl;
+        }
+     else if(i==1) {
+        elem* ptr=head;
+        head=head->nast;
+        ptr->nast=NULL;
+        delete ptr;
+    }
+    }
+
+
+int read(elem* head,int i)//zwrocenie i-tego elementu
+{
+    if(head!=NULL){
+        elem *ptr=head;
+        for(int x=1;x<i;x++){
+        if(ptr!=NULL){
+            ptr=ptr->nast;
+            }
+        else break;
+        }
+        if(ptr!=NULL){
+        return ptr->dana;
+        }
+    }
+    return -1;
+}
+
+void write_all(elem* head)//wypisujaca elementy
+{
+    if(head!=NULL){
+        elem *ptr=head;
+        cout<<"elementy listy : ";
+        while(ptr!=NULL){
+            cout<<ptr->dana<<" ";
+            ptr=ptr->nast;
+        }
+        cout<<endl;
+    }
+    else cout<<"Lista jest pusta"<<endl;;
+}
+int count_elem(elem* head)//wypisuje ilosc elementow
+{
+    if(head!=NULL){
+        elem *ptr=head;
+        int value=0;
+        while(ptr!=NULL){
+            value++;
+            ptr=ptr->nast;
+        }
+        return value;
+    }
+    else return 0;
+}
+int main()
+{
+elem *mojalista = NULL;     // utworzenie poczÄtku stosu
+    insertt(mojalista,31,1);
+    insertt(mojalista,44,2);
+    insertt(mojalista,45,3);
+    insertt(mojalista,47,6);
+    insertt(mojalista,50,4);
+    write_all(mojalista);
+    insertt(mojalista,170,3);
+    cout<<"---------------------------"<<endl;
+    write_all(mojalista);
+    cout<<"ilosc elem :"<<count_elem(mojalista)<<endl;
+
+    removee(mojalista,6);
+    write_all(mojalista);
+    cout<<"---------------------------"<<endl;
+    cout<<"nr 1:"<<read(mojalista,1)<<endl;
+    cout<<"nr 3:"<<read(mojalista,3)<<endl;
+    cout<<"nr 2:"<<read(mojalista,2)<<endl;
+    cout<<"nr 6:"<<read(mojalista,6)<<endl;
+    cout<<"nr 4:"<<read(mojalista,4)<<endl;
+
+    return 0;
+
+}
