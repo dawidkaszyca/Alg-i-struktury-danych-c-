@@ -1,0 +1,111 @@
+# Alg-i-struktury-danych-[c++]
+
+#include <iostream>
+
+using namespace std;
+
+struct elem{
+    int dane;       // miejsce na przechowywanie danych zapamietanych w danym elemencie
+    elem* nast;     // wskaznik na kolejny element stosu (wlasciwie to poprzedni dodany)
+};
+
+void push (elem* &stos, int x)
+{
+    if(stos!=NULL){
+        elem *ptr=stos;
+        stos=new elem();
+        stos->dane=x;
+        stos->nast=ptr;
+    }
+    else {
+        stos=new elem();
+        stos->dane=x;
+        stos->nast=NULL;
+    }
+}
+
+int pop (elem* &stos)
+{
+    if(stos!=NULL){
+        int value;
+        elem *ptr=stos;
+        stos=stos->nast;
+        value=ptr->dane;
+        ptr->nast=NULL;
+        delete ptr;
+        return value;
+
+    }
+    return -1;
+}
+
+int topEl (elem* stos)
+{
+    if(stos!=NULL)return stos->dane;
+    return -1;
+}
+
+bool isEmpty(elem* stos)
+{
+    if(stos!=NULL)return false;
+    return true;
+}
+
+int main()
+{
+    elem *mojStos = NULL;
+
+    cout << "Czy stos jest pusty?\t" << isEmpty(mojStos) << endl;
+
+    cout << "Umieszczam na stosie kilka elementow... ";
+
+    push(mojStos, 7);       cout << "(7) ";
+    push(mojStos, 29);      cout << "(29) ";
+    push(mojStos, 11);      cout << "(11) ";
+    cout << endl;
+
+    cout << "Czy stos jest pusty?\t" << isEmpty(mojStos) << endl;
+
+    cout << "Sprawdzam, co jest na wierzchu stosu...\t" << topEl(mojStos) << endl;
+    cout << "Ponownie sprawdzam, co jest na wierzchu stosu...\t" << topEl(mojStos) << endl;
+
+    cout << "Pobieram element z wierzchu stosu...\t" << pop(mojStos) << endl;
+
+    cout << "Umieszczam element na stosie... " << "(3) " << endl;
+    push(mojStos, 3);
+
+    cout << "Pobieram kolejne elementy ze stosu... " << endl;
+
+    cout << pop(mojStos) << "\t";
+    cout << pop(mojStos) << "\t";
+    cout << pop(mojStos) << "\t ";
+    cout << endl;
+
+    cout << "Czy stos jest pusty?\t" << isEmpty(mojStos) << endl;
+
+    cout << endl;
+
+    cout << "Umieszczam elementy na stosie... ";
+    push(mojStos, 78);       cout << "(78) ";
+    push(mojStos, 52);       cout << "(52) ";
+    push(mojStos, 110);      cout << "(110) ";
+    push(mojStos, 47);       cout << "(47) ";
+    push(mojStos, 9);        cout << "(9) ";
+    cout << endl;
+
+    cout << "Pobieram kolejne elementy ze stosu az bedzie pusty...\t";
+
+    while(!isEmpty(mojStos))
+        cout << pop(mojStos) << "  ";
+    cout << endl;
+
+    cout << "Czy stos jest pusty?\t" << isEmpty(mojStos) << endl;
+
+    cout << endl;
+
+    cout << "Pobieram element z PUSTEGO stosu...\t" << pop(mojStos) << " ";
+
+    cout << endl << endl;
+
+    return 0;
+}
