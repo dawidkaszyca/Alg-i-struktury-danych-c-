@@ -1,0 +1,114 @@
+# Alg-i-struktury-danych-[c++]
+
+#include <iostream>
+
+using namespace std;
+
+struct elem{
+    int dana;       // miejsce na przechowywanie danych zapamitanych w danym elemencie
+    elem* nast;     // wskaznik na kolejny element kolejki
+};
+
+void add(elem* &pocz_kolejki, elem* &kon_kolejki, int x)
+{
+    if(kon_kolejki!=NULL)
+    {
+        elem *ptr=kon_kolejki;
+        kon_kolejki=new elem();
+        kon_kolejki->dana=x;
+        kon_kolejki->nast=NULL;
+        ptr->nast=kon_kolejki;
+    }
+    else if(pocz_kolejki==NULL&&kon_kolejki==NULL){// 1-szy element
+        pocz_kolejki=new elem();
+        pocz_kolejki->dana=x;
+        pocz_kolejki->nast=kon_kolejki;
+        kon_kolejki=pocz_kolejki;
+
+    }
+}
+
+int next(elem* &pocz_kolejki, elem* &kon_kolejki) //pobiera i usuwa 1 element kolejki
+{
+    if(pocz_kolejki !=NULL){
+        elem* ptr=pocz_kolejki;
+        int value=ptr->dana;
+        pocz_kolejki=ptr->nast;
+        if(pocz_kolejki==kon_kolejki)kon_kolejki=NULL;
+        delete ptr;
+        return value;
+    }
+    return -1;
+
+}
+
+int firstEl(elem* pocz_kolejki)
+{
+    if(pocz_kolejki!=NULL)return pocz_kolejki->dana;
+    return -1;
+}
+
+bool isEmpty(elem* pocz_kolejki)
+{
+    if(pocz_kolejki!=NULL)return false;
+    return true;
+}
+
+int main()
+{
+    elem *mojaKolejka = NULL;
+    elem *koniecKolejki = NULL;
+
+    cout << "Czy kolejka jest pusta? \t" << isEmpty(mojaKolejka) << endl;    
+
+    cout << "Umieszczam w kolejce kilka elementow... ";
+    
+    add(mojaKolejka,koniecKolejki, 7);       cout << "(7) ";
+    add(mojaKolejka,koniecKolejki, 29);      cout << "(29) ";
+    add(mojaKolejka,koniecKolejki, 11);      cout << "(11) ";
+	cout << endl;
+
+    cout << "Czy kolejka jest pusta? \t" << isEmpty(mojaKolejka) << endl;    
+
+    cout << "Sprawdzam, co jest na poczatku kolejki...\t" << firstEl(mojaKolejka) << endl;
+    cout << "Ponownie sprawdzam, co jest na poczatku kolejki...\t" << firstEl(mojaKolejka) << endl; 
+
+    cout << "Pobieram element z kolejki...\t" << next(mojaKolejka,koniecKolejki) << endl;   
+    cout << "Umieszczam element w kolejce... " << "(3) " << endl;
+    add(mojaKolejka,koniecKolejki, 3);       
+
+    cout << "Pobieram kolejne elementy z kolejki... " << endl;
+   
+    cout << next(mojaKolejka,koniecKolejki) << "\t";
+    cout << next(mojaKolejka,koniecKolejki) << "\t";
+    cout << next(mojaKolejka,koniecKolejki) << "\t";
+    cout << endl;
+
+    cout << "Czy kolejka jest pusta? \t" << isEmpty(mojaKolejka) << endl;    
+
+    cout << endl;
+
+    cout << "Umieszczam elementy w kolejce... ";
+    add(mojaKolejka,koniecKolejki, 78);       cout << "(78) ";
+    add(mojaKolejka,koniecKolejki, 52);       cout << "(52) ";
+    add(mojaKolejka,koniecKolejki, 110);      cout << "(110) ";
+    add(mojaKolejka,koniecKolejki, 47);       cout << "(47) ";
+    add(mojaKolejka,koniecKolejki, 9);        cout << "(9) ";
+	cout << endl;
+
+    cout << "Pobieram kolejne elementy z kolejki az bedzie pusta...\t";
+    
+    while(!isEmpty(mojaKolejka))
+        cout << next(mojaKolejka,koniecKolejki) << "  ";
+    cout << endl;
+
+    cout << "Czy kolejka jest pusta? \t" << isEmpty(mojaKolejka) << endl;   
+
+    cout << endl;
+
+    cout << "Pobieram element z PUSTEJ kolejki...\t" << next(mojaKolejka,koniecKolejki) << " ";    
+
+    cout << endl << endl;
+
+    return 0;
+}
