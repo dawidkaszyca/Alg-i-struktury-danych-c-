@@ -1,0 +1,138 @@
+# Alg-i-struktury-danych-[c++]
+
+#include <iostream>
+
+using namespace std;
+
+struct elem{
+    int data;
+    elem* next;
+    elem* previous;
+
+};
+
+void add(elem* &lista, int x)//dodanie elementu
+{
+    if(lista!=NULL){
+        elem* ptr=lista;
+        while(ptr->next!=NULL){
+            ptr=ptr->next;
+        }
+        elem* ptr2=new elem();
+        ptr2->data=x;
+        ptr->next=ptr2;
+        ptr2->previous=ptr;
+        ptr2->next=NULL;
+    }
+    else
+    {
+        lista=new elem();
+        lista->next=NULL;
+        lista->previous=NULL;
+        lista->data=x;
+    }
+}
+void removeFirst(elem* &lista){//usun 1 element
+    if(lista!=NULL)
+    {
+        if(lista->next!=NULL)
+        {
+            elem* ptr=lista;
+            lista=lista->next;
+            lista->previous=NULL;
+            delete ptr;
+        }
+        else lista=NULL;
+    }
+}
+void removeElem(elem* &lista,int which){//usun wskazany element
+    if (lista!=NULL)
+    {
+        elem* ptr=lista;
+        if(which>1)
+        {
+            for(int i=1; i<(which-1); i++)
+            {
+                ptr=ptr->next;
+            }
+            elem* del=ptr->next;
+            if(del->next!=NULL)
+            {
+                elem* last=del->next;
+                ptr->next=last;
+                last->previous=ptr;
+            }
+            else
+                ptr->next=NULL;
+            delete del;
+        }
+        else if(which==1)
+        {
+            if(lista->next!=NULL)
+            {
+                elem* ptr=lista;
+                lista=lista->next;
+                lista->previous=NULL;
+                delete ptr;
+            }
+            else
+                lista=NULL;
+        }
+    }
+}
+
+elem* reverseList(elem* lista){//odrwacanie za pomoca zmiany wskaznikow;
+    elem* data=lista;
+    while(lista->next!=NULL)
+    {
+        lista=lista->next;
+    }
+    elem* ptr=lista->previous;
+    lista->previous=NULL;
+    lista->next=ptr;
+    elem* ptr2;
+    elem* ptr3=ptr->previous;
+    ptr->previous=lista;
+    while(ptr3->data!=data->data)
+    {
+        ptr2=ptr3->previous;
+        ptr->next=ptr3;
+        ptr3->previous=ptr;
+        ptr3=ptr2;
+        ptr2=ptr2->previous;
+        ptr=ptr->next;
+    }
+    ptr3->next=NULL;
+    ptr->next=ptr3;
+    return lista;
+}
+
+void printList(elem* lista){//drukuj
+    if(lista!=NULL)
+    {
+        elem* ptr=lista;
+        cout<<"elementy listy : ";
+        while(ptr!=NULL)
+        {
+            cout<<ptr->data<<" ";
+            ptr=ptr->next;
+        }
+        cout<<endl;
+    }
+}
+
+int main()
+{
+    elem* moja=NULL;
+    add(moja,3);
+    removeFirst(moja);
+    add(moja,5);
+    add(moja,10);
+    removeElem(moja,2);
+    add(moja,16);
+    add(moja,21);
+    printList(moja);
+    moja=reverseList(moja);
+    printList(moja);
+    return 0;
+}
